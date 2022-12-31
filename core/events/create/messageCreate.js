@@ -11,9 +11,7 @@ module.exports = {
             await interaction.guild.members.fetch({ force: true })
 
             const mentionRegPrefix = new RegExp(`^<@!?${kaizo.user.id}>`);
-    
-            // if (!userPrefix[0]) botPrefix = kaizo.config.bot.prefix
-            // else botPrefix = userPrefix[0].guild_prefix;
+
             const botPrefix = kaizo.config.bot.prefix;
             const prefix = interaction.content.match(mentionRegPrefix) ? interaction.content.match(mentionRegPrefix)[0] : botPrefix;
     
@@ -28,15 +26,11 @@ module.exports = {
             if (command) {
                 // --------------------- Dành cho owner bot -------------------- //
                 if (command.mode.developerOnly && interaction.author.id !== kaizo.config.settings.developer) {
-                    return await interaction.reply({
-                        embeds: [kaizo.embeds.embedEditor(kaizo, interaction, `This command is limited to bot developers only !`, false, false, false, false)]
-                    });
+                    return await interaction.send('This command is limited to bot developers only !')
                 }
                 // --------------------- Dành cho owner guild -------------------- //
                 if (command.mode.ownerGuildOnly && interaction.author.id !== interaction.guild.ownerId) {
-                    return await interaction.reply({
-                        embeds: [kaizo.embeds.embedEditor(kaizo, interaction, `This command is limited to owner guild only !`, false, false, false, false)]
-                    });
+                    return await interaction.reply('This command is limited to owner guild only !')
                 }
 
                 command.run(kaizo, interaction, args, prefix);

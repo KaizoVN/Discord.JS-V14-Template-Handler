@@ -15,11 +15,7 @@ module.exports = {
             
                     if (!interaction.content.startsWith(prefix)) return;
 
-                    return await interaction.reply({
-                        embeds: [kaizo.embeds.embedEditor(kaizo, interaction, `・Hi I'm **${kaizo.user.username}** !\n・My prefix : \`${botPrefix}\` or ${prefix}, you can also use a slash [\`/\`]\n・Vote me? [Vote In Here](${kaizo.config.settings.topGG})\n・Languages : :flag_us: (Update soon :flag_vn:)`, true, `${interaction.author.username} Need help?`, false, false)],
-                        components: [kaizo.buttons.buttonLink(kaizo)]
-                    
-                    });
+                    return await interaction.send(`Hi! My prefix is ${prefix}.`)
             }
         } catch (e) {
             console.log(e);
