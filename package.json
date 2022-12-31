@@ -1,0 +1,19 @@
+{
+  "name": "discord.js-template-v14",
+  "version": "0.0.1",
+  "description": "A Discord Bot template v14 created by Kaizo#7160",
+  "main": "kaizoMain.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node kaizoMain.js"
+  },
+  "author": "Kaizo",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "i18n": "^0.15.1",
+    "moment": "^2.29.4",
+    "mysql": "^2.18.1",
+    "mongoose" : "^6.8.2"
+  }
+}
