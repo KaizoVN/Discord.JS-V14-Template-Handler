@@ -19,7 +19,7 @@ module.exports = {
     example: ["ping"],
     options: [],
 
-    async run(kaizo, interaction, args, prefix) {
+    async run(kaizo, interaction, args, timecooldown) {
         const wsPing = kaizo.ws.ping;
 
         const upTime = kaizo.utils.msToTime(kaizo.uptime);
