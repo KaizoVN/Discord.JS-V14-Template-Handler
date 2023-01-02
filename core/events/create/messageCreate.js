@@ -35,7 +35,7 @@ module.exports = {
                 }
                 // --------------------- Dành cho owner guild -------------------- //
                 if (command.mode.ownerGuildOnly && interaction.author.id !== interaction.guild.ownerId) {
-                    return await interaction.reply('This command is limited to owner guild only !')
+                    return await interaction.send('This command is limited to owner guild only !')
                 }
 
                 // --------------------- For permissions -------------------- //
