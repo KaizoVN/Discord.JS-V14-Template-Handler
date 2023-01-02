@@ -1,3 +1,8 @@
+const {
+    Collection,
+    PermissionsBitField
+} = require('discord.js');
+
 module.exports = {
 	name: "messageCreate",
 
@@ -33,7 +38,59 @@ module.exports = {
                     return await interaction.reply('This command is limited to owner guild only !')
                 }
 
-                command.run(kaizo, interaction, args, prefix);
+                // --------------------- For permissions -------------------- //
+                if (command.permissions.bot) {
+                    if (!interaction.guild.members.cache.get(kaizo.user.id).permissions.has(PermissionsBitField.resolve([`SendMessages`, `ViewChannel`, `AttachFiles`, `Speak`, `Connect`]))) {
+                        return interaction.send('Looks like I missing the following permissions: \`SendMessages, ViewChannel, AttachFiles, CONNECT, SPEAK\`')
+                    }
+
+                    if (!interaction.guild.members.cache.get(kaizo.user.id).permissions.has(PermissionsBitField.resolve(command.permissions.bot || []))) {
+                        return interaction.send(`Looks like I missing the following permissions: \`${command.permissions.bot || []}\``)
+                        .catch((e) => {
+                            console.log(e)
+                        });;
+                    }
+                }
+
+                if (command.permissions.user) {
+                    if (!interaction.member.permissions.has(PermissionsBitField.resolve(command.permissions.author || []))) {
+                        return interaction.send(`Looks like you're missing the following permission: \`${command.permissions.author || []}\``)
+                        .catch((e) => {
+                            kaizo.logger.error(e)
+                        });;
+                    }
+                }
+
+                // --------------------- For cooldown -------------------- //
+                if (!kaizo.cooldowns.has(command.name)) {
+                    kaizo.cooldowns.set(command.name, new Collection());
+                }
+
+                const timecooldowns = kaizo.cooldowns.get(command.name);
+
+                if (interaction.author.id !== kaizo.config.settings.developer) {
+                    if (command.cooldown) {
+                        if (timecooldowns.has(interaction.author.id)) {
+                            const expTime = timecooldowns.get(interaction.author.id) + (command.cooldown * 1000)
+                            if (Date.now() < expTime) {
+                                var timeLeft = (expTime - Date.now()) / 1000
+                                return interaction.reply({
+                                    embeds: [kaizo.embeds.embedEditor(kaizo, interaction, false, `Please wait ${kaizo.utils.msToTime(timeLeft.toFixed(1) * 1000)} before using that command again!`)],
+                                    ephemeral: true
+                                }).catch((err) => {
+                                    kaizo.logger.error(err);
+                                });
+                            }
+                        }
+
+                        timecooldowns.set(interaction.author.id, Date.now())
+                        setTimeout(() => {
+                            timecooldowns.delete(interaction.author.id)
+                        }, command.cooldown * 1000)
+                    }
+                };
+
+                command.run(kaizo, interaction, args, timecooldowns, prefix);
             }
         } catch (e) {
             kaizo.logger.error(e);

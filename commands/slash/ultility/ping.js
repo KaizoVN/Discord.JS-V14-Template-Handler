@@ -17,6 +17,7 @@ module.exports = {
     },
     category: "Ultility",
     example: ["ping"],
+    options: [],
 
     async run(kaizo, interaction, args, prefix) {
         const wsPing = kaizo.ws.ping;
@@ -24,7 +25,7 @@ module.exports = {
         const upTime = kaizo.utils.msToTime(kaizo.uptime);
 
         const pingemb = new EmbedBuilder()
-        .setAuthor({ name: "Ping", iconURL: `${interaction.author.displayAvatarURL()}`  })
+        .setAuthor({ name: "Ping", iconURL: `${interaction.user.displayAvatarURL()}`  })
         .setColor(kaizo.config.embed.success)
         .addFields(
             { name: "Bot Latency", value: `${wsPing}ms`, inline: true },

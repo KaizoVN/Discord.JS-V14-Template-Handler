@@ -63,7 +63,7 @@ module.exports = kaizo;
     kaizo.utils = require('./manager/structure/plugin/utils.js');
     kaizo.logger = require('./manager/structure/plugin/logger.js');
 
-    kaizo.structure = require('./manager/structure/**file or category**'); /// edit folder here
+    // kaizo.structure = require('./manager/structure/structure'); /// edit folder here
 
     // --------------- Other --------------- //
     kaizo.mysql = con;
@@ -76,7 +76,7 @@ module.exports = kaizo;
     kaizo.delay = ms => new Promise(res => setTimeout(res, ms));
 
     // --------------- Loading Handler --------------- //
-    ["antiCrash", "eventHandler", "prefixHandler"].forEach((handler) => {
+    ["antiCrash", "eventHandler", "prefixHandler", "slashHandler"].forEach((handler) => {
         require(`./manager/handlers/${handler}`)(kaizo);
     });
     

@@ -15,7 +15,7 @@ module.exports = {
             
                     if (!interaction.content.startsWith(prefix)) return;
 
-                    return await interaction.send(`Hi! My prefix is ${prefix}.`)
+                    return await interaction.channel.send(`Hi! My prefix is ${prefix}.`)
             }
         } catch (e) {
             console.log(e);
